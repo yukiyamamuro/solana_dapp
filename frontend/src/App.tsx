@@ -17,6 +17,7 @@ const TEST_GIFS = [
 export const App: FC = () => {
   const [walletAddres, setWalletAddress] = useState<string| null>(null);
   const [inputValue, setInputValue] = useState<string>('');
+  const [gifList, setGifList] = useState<string[]>([]);
 
   const checkWalletConnected = async () => {
     try {
@@ -58,6 +59,8 @@ export const App: FC = () => {
   const sendGif = async () => {
     if (inputValue.length > 0) {
       console.log('Gif link:', inputValue);
+      setGifList([...gifList, inputValue]);
+      setInputValue('');
     } else {
       console.log('Empty input. Try again.');
     }
@@ -70,6 +73,14 @@ export const App: FC = () => {
     window.addEventListener('load', onLoading);
     return () => window.removeEventListener('load', onLoading);
   }, []);
+
+  useEffect(() => {
+    if (walletAddres) {
+      console.log('Fetching gifs...');
+
+      setGifList(TEST_GIFS);
+    }
+  }, [walletAddres]);
 
   return (
     <Box
@@ -119,7 +130,7 @@ export const App: FC = () => {
                 <Button type='submit' variant="contained" size='large' fullWidth>Submit</Button>
               </form>
             </Card>
-            {TEST_GIFS.map(gif => (
+            {gifList.map(gif => (
                 <Grid key={gif} sx={{ padding: 1 }} >
                   <img src={gif} alt="gif"  height={250} width={250} />
                 </Grid>
