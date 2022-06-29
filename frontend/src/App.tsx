@@ -12,7 +12,6 @@ declare global {
   }
 }
 
-
 const { SystemProgram, Keypair } = web3;
 let baseAccount = Keypair.generate();
 const com: Commitment = 'processed'
